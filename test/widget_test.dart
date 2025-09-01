@@ -66,7 +66,7 @@ void main() {
     expect(emailError, findsOneWidget);
 
   });
-  
+
   testWidgets('Shows password error when less than 4 characters entered', (WidgetTester tester) async {
     await tester.pumpWidget(App());
     // find the last input widget (password)
@@ -82,6 +82,42 @@ void main() {
 
     // assert that the password error is present
     expect(passwordError, findsOneWidget);
+
+  });
+
+    testWidgets('Shows valid email when @ is present', (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    // find the first input widget (email)
+    final emailInput = find.byType(TextFormField).first;
+    
+    // enter a valid email and press the submit button
+    await tester.enterText(emailInput, 'validEmail@');
+    await tester.tap(find.text('Submit'));
+    await tester.pump();
+
+    // find the email error widget
+    final emailError = find.text('Please enter a valid email');
+
+    // assert that the email error is not present
+    expect(emailError, findsNothing);
+
+  });
+
+  testWidgets('Shows valid password when 4 or more characters', (WidgetTester tester) async {
+    await tester.pumpWidget(App());
+    // find the last input widget (password)
+    final passowrdInput = find.byType(TextFormField).last;
+    
+    // enter a valid password and press the submit button
+    await tester.enterText(passowrdInput, '1234');
+    await tester.tap(find.text('Submit'));
+    await tester.pump();
+
+    // find the password error widget
+    final passwordError = find.text('Please enter a valid password');
+
+    // assert that the passwrd error is not present
+    expect(passwordError, findsNothing);
 
   });
 }
